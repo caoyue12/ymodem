@@ -134,19 +134,6 @@ void Widget::on_transmitBrowse_clicked()
     }
 }
 
-void Widget::on_receiveBrowse_clicked()
-{
-//    ui->receivePath->setText(QFileDialog::getExistingDirectory(this, u8"Select directory", ".", QFileDialog::ShowDirsOnly));
-
-//    if(ui->receivePath->text().isEmpty() != true)
-//    {
-//        ui->receiveButton->setEnabled(true);
-//    }
-//    else
-//    {
-//        ui->receiveButton->setDisabled(true);
-//    }
-}
 
 void Widget::on_transmitButton_clicked()
 {
@@ -183,49 +170,12 @@ void Widget::on_transmitButton_clicked()
     }
 }
 
-void Widget::on_receiveButton_clicked()
-{
-    if(receiveButtonStatus == false)
-    {
-        serialPort->close();
-
-//       ymodemFileReceive->setFilePath(ui->receivePath->text());
-        ymodemFileReceive->setPortName(ui->comPort->currentText());
-        ymodemFileReceive->setPortBaudRate(ui->comBaudRate->currentText().toInt());
-
-        if(ymodemFileReceive->startReceive() == true)
-        {
-            receiveButtonStatus = true;
-
-            ui->comButton->setDisabled(true);
-
-            ui->transmitBrowse->setDisabled(true);
-            ui->transmitButton->setDisabled(true);
-
-//            ui->receiveBrowse->setDisabled(true);
-//            ui->receiveButton->setText(u8"取消");
-//            ui->receiveProgress->setValue(0);
-        }
-        else
-        {
-            QMessageBox::warning(this, u8"failure", u8"File reception failed！", u8"closed");
-        }
-    }
-    else
-    {
-        ymodemFileReceive->stopReceive();
-    }
-}
 
 void Widget::transmitProgress(int progress)
 {
     ui->transmitProgress->setValue(progress);
 }
 
-void Widget::receiveProgress(int progress)
-{
-////    ui->receiveProgress->setValue(progress);
-}
 
 void Widget::transmitStatus(Ymodem::Status status)
 {
@@ -257,7 +207,7 @@ void Widget::transmitStatus(Ymodem::Status status)
             ui->transmitBrowse->setEnabled(true);
             ui->transmitButton->setText(u8"transmit");
 
-            QMessageBox::warning(this, u8"success", u8"File sent successfully！", u8"closed");
+            QMessageBox::about(this, u8"success", u8"File sent successfully！");
 
             break;
         }
@@ -322,103 +272,4 @@ void Widget::transmitStatus(Ymodem::Status status)
         }
     }
 }
-
-void Widget::receiveStatus(YmodemFileReceive::Status status)
-{
-    switch(status)
-    {
-        case YmodemFileReceive::StatusEstablish:
-        {
-            break;
-        }
-
-        case YmodemFileReceive::StatusTransmit:
-        {
-            break;
-        }
-
-        case YmodemFileReceive::StatusFinish:
-        {
-            receiveButtonStatus = false;
-
-            ui->comButton->setEnabled(true);
-
-            ui->transmitBrowse->setEnabled(true);
-
-            if(ui->transmitPath->text().isEmpty() != true)
-            {
-                ui->transmitButton->setEnabled(true);
-            }
-
-//           ui->receiveBrowse->setEnabled(true);
-//           ui->receiveButton->setText(u8"接收");
-
-            QMessageBox::warning(this, u8"成功", u8"文件接收成功！", u8"关闭");
-
-            break;
-        }
-
-        case YmodemFileReceive::StatusAbort:
-        {
-            receiveButtonStatus = false;
-
-            ui->comButton->setEnabled(true);
-
-            ui->transmitBrowse->setEnabled(true);
-
-            if(ui->transmitPath->text().isEmpty() != true)
-            {
-                ui->transmitButton->setEnabled(true);
-            }
-
-//            ui->receiveBrowse->setEnabled(true);
-//            ui->receiveButton->setText(u8"接收");
-
-            QMessageBox::warning(this, u8"失败", u8"文件接收失败！", u8"关闭");
-
-            break;
-        }
-
-        case YmodemFileReceive::StatusTimeout:
-        {
-            receiveButtonStatus = false;
-
-            ui->comButton->setEnabled(true);
-
-            ui->transmitBrowse->setEnabled(true);
-
-            if(ui->transmitPath->text().isEmpty() != true)
-            {
-                ui->transmitButton->setEnabled(true);
-            }
-
-//            ui->receiveBrowse->setEnabled(true);
-//            ui->receiveButton->setText(u8"接收");
-
-            QMessageBox::warning(this, u8"失败", u8"文件接收失败！", u8"关闭");
-
-            break;
-        }
-
-        default:
-        {
-            receiveButtonStatus = false;
-
-            ui->comButton->setEnabled(true);
-
-            ui->transmitBrowse->setEnabled(true);
-
-            if(ui->transmitPath->text().isEmpty() != true)
-            {
-                ui->transmitButton->setEnabled(true);
-            }
-
-//            ui->receiveBrowse->setEnabled(true);
-//            ui->receiveButton->setText(u8"接收");
-
-            QMessageBox::warning(this, u8"失败", u8"文件接收失败！", u8"关闭");
-        }
-    }
-}
-
 
