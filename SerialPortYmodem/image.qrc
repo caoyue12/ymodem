@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>lora.jfif</file>
+        <file>rakimage.png</file>
+        <file>rak600_400.png</file>
+    </qresource>
+</RCC>
